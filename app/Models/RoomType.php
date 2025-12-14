@@ -1,4 +1,18 @@
 <?php
+
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Model;
-class RoomType extends Model { protected $guarded = []; }
+
+class RoomType extends Model
+{
+    protected $fillable = [
+        'name',
+        'hourly_rate',
+    ];
+
+    public function rooms()
+    {
+        return $this->hasMany(Room::class);
+    }
+}

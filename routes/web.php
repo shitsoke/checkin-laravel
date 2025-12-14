@@ -10,8 +10,13 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Admin\AdminDashboardController;
 
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminRoomController;
+use App\Http\Controllers\Admin\AdminBookingController;
+use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\AdminReviewController;
+use App\Http\Controllers\Admin\AdminRoomTypeController;
 /*
 |--------------------------------------------------------------------------
 | Authentication Routes
@@ -19,7 +24,6 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 */
 Auth::routes(['only' => ['reset', 'email']]);
 
-// Redirect root to login or dashboard
 Route::get('/', function () {
     return Auth::check()
         ? redirect()->route('dashboard')
@@ -41,46 +45,51 @@ Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
 /*
 |--------------------------------------------------------------------------
-| ADMIN ROUTES (Requires Login)
+| ADMIN ROUTES (Requires Admin)
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
 
-    // 👉 ADMIN DASHBOARD ROUTE
-    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
-        ->name('admin.dashboard');
+    // Dashboard
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])
+        ->name('dashboard');
 
+    // Admin Pages (matching sidebar!)
+    Route::get('/rooms', [AdminRoomController::class, 'index'])->name('rooms');
+    Route::post('/rooms', [AdminRoomController::class, 'store'])->name('rooms.store');
+    Route::post('/rooms/{room}/toggle', [AdminRoomController::class, 'toggleVisibility'])
+        ->name('rooms.toggle');
+    Route::get('/bookings', [AdminBookingController::class, 'index'])->name('bookings');
+    Route::get('/users', [AdminUserController::class, 'index'])->name('users');
+    Route::get('/reviews', [AdminReviewController::class, 'index'])->name('reviews');
+    Route::get('/roomtypes', [AdminRoomTypeController::class, 'index'])->name('roomtypes');
+    Route::get('/roomtypes/{roomType}/edit', [AdminRoomTypeController::class, 'edit'])->name('roomtypes.edit');
+    Route::put('/roomtypes/{roomType}', [AdminRoomTypeController::class, 'update'])->name('roomtypes.update');
 });
 
 /*
 |--------------------------------------------------------------------------
-| USER APPLICATION ROUTES (Requires Login)
+| USER ROUTES (Normal users)
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth'])->group(function () {
 
-    // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Rooms
     Route::get('/browse-rooms', [RoomController::class, 'index'])->name('rooms.browse');
     Route::get('/rooms/{id}', [RoomController::class, 'show'])->name('rooms.show');
 
-    // Bookings
     Route::get('/my-bookings', [BookingController::class, 'index'])->name('bookings.index');
     Route::get('/my-bookings/{id}', [BookingController::class, 'show'])->name('bookings.show');
     Route::post('/book', [BookingController::class, 'store'])->name('booking.store');
 
-    // Reviews
     Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
     Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 
-    // Settings
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
     Route::put('/settings/profile', [SettingsController::class, 'updateProfile'])->name('settings.update.profile');
     Route::put('/settings/password', [SettingsController::class, 'updatePassword'])->name('settings.update.password');
 
-    // About
     Route::get('/about', function () {
         return view('about.index');
     })->name('about.index');

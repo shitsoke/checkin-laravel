@@ -3,24 +3,39 @@
 @section('content')
 <div class="main-content">
 
+    <!-- Updated Welcome Card with Logout -->
     <div class="welcome-card">
         <div class="d-flex justify-content-between align-items-center flex-wrap">
+            
+            <!-- Welcome Text -->
             <div>
                 <h2>
                     Welcome,
                     {{ $user->profile->display_name ?? $user->first_name . ' ' . $user->last_name }}
                 </h2>
-
-                <p class="mb-0">Role: <strong>{{ $user->role }}</strong></p>
+                <p class="mb-0">Role: <strong>{{ ucfirst($user->role) }}</strong></p>
             </div>
 
-            <div class="user-avatar">
-                @if($user->profile && $user->profile->avatar)
-                    <img src="{{ $user->profile->avatar }}" alt="Profile Picture">
-                @else
-                    {{ strtoupper(substr($user->first_name, 0, 1)) }}
-                @endif
+            <!-- User Avatar + Logout -->
+            <div class="d-flex align-items-center gap-3">
+                <!-- Avatar -->
+                <div class="user-avatar">
+                    @if($user->profile && $user->profile->avatar)
+                        <img src="{{ $user->profile->avatar }}" alt="Profile Picture" style="width:50px; height:50px; object-fit:cover; border-radius:50%;">
+                    @else
+                        <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center" style="width:50px; height:50px; font-weight:bold;">
+                            {{ strtoupper(substr($user->first_name, 0, 1)) }}
+                        </div>
+                    @endif
+                </div>
+
+                <!-- Logout Button -->
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="btn btn-outline-danger btn-sm">Logout</button>
+                </form>
             </div>
+
         </div>
     </div>
 

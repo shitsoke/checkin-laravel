@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Auth;
 use App\Models\Booking;
 use App\Models\Review;
@@ -8,9 +10,14 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        // 🔥 Redirect admin away from user dashboard
+        if (Auth::check() && Auth::user()->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+
         $user = Auth::user();
-        
-        // Logic from dashboard.php
+
+        // User dashboard logic
         $stats = [
             'total' => Booking::where('user_id', $user->id)->count(),
             'upcoming_count' => Booking::where('user_id', $user->id)
