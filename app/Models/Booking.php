@@ -7,4 +7,9 @@ class Booking extends Model {
     protected $casts = ['start_time' => 'datetime', 'end_time' => 'datetime'];
     public function room() { return $this->belongsTo(Room::class); }
     public function user() { return $this->belongsTo(User::class); }
+
+    public function roomType()
+    {
+        return $this->room->type();
+    }
 }

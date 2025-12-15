@@ -29,17 +29,8 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    // We change this to dashboard, as /home is usually the default, but your app uses /dashboard.
-    protected $redirectTo = '/login'; 
-
-    protected function registered(Request $request, $user)
-    {
-        // 1. Force logout immediately after registration
-        $this->guard()->logout();
-        
-        // 2. Redirect to the login page with a success message
-        return redirect('/login')->with('status', 'Registration successful! Please log in to continue.');
-    }
+    // After registration, send the user to the dashboard
+    protected $redirectTo = '/dashboard';
 
     /**
      * Create a new controller instance.
@@ -77,13 +68,10 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            // CHANGE 2: Save first_name and last_name to the database
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            // Optional: If you have a 'name' field that still needs data (e.g., for compatibility), you can concatenate here.
-            // 'name' => $data['first_name'] . ' ' . $data['last_name'],
         ]);
     }
 }

@@ -25,5 +25,6 @@ class ResetPasswordController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    // Redirect to the app dashboard after a successful password reset
+    protected $redirectTo = '/dashboard';
 }

@@ -1,6 +1,39 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+    :root {
+        --primary-color: rgba(220, 53, 69, 0.85);
+        --primary-solid: #dc3545;
+        --secondary-color: #c82333;
+        --accent-color: #ff7b7b;
+        --sidebar-width: 90px;
+    }
+
+    body { background-color: #f9f5f5; }
+
+    .main-content { margin-left: var(--sidebar-width); padding: 20px; transition: all .3s ease; }
+
+    .welcome-card {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        color: white; border-radius: 15px; box-shadow: 0 10px 20px rgba(220,53,69,0.2);
+        padding: 25px; margin-bottom: 30px;
+    }
+
+    .card { border-radius: 12px; border: none; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
+    .card-header { background: white; border-radius: 12px 12px 0 0; padding: 12px 16px; color: var(--primary-solid); font-weight:600 }
+
+    .quick-actions .btn { border-radius:10px; padding:10px 14px; margin:4px; }
+
+    .status-badge { padding:5px 12px; border-radius:20px; font-size:.85rem; font-weight:600 }
+
+    .user-avatar { width:50px; height:50px; border-radius:50%; overflow:hidden; display:flex; align-items:center; justify-content:center; background:var(--accent-color); color:#fff; font-weight:700 }
+
+    @media (max-width: 768px) {
+        .main-content { margin-left:0; padding-top:70px }
+    }
+</style>
+
 <div class="main-content">
 
     <!-- Updated Welcome Card with Logout -->
@@ -21,7 +54,13 @@
                 <!-- Avatar -->
                 <div class="user-avatar">
                     @if($user->profile && $user->profile->avatar)
-                        <img src="{{ $user->profile->avatar }}" alt="Profile Picture" style="width:50px; height:50px; object-fit:cover; border-radius:50%;">
+                        @php
+                            $avatarPath = $user->profile->avatar;
+                            $avatarUrl = str_starts_with($avatarPath, 'http')
+                                ? $avatarPath
+                                : asset('storage/' . ltrim($avatarPath, '/'));
+                        @endphp
+                        <img src="{{ $avatarUrl }}" alt="Profile Picture" style="width:50px; height:50px; object-fit:cover; border-radius:50%;">
                     @else
                         <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center" style="width:50px; height:50px; font-weight:bold;">
                             {{ strtoupper(substr($user->first_name, 0, 1)) }}
@@ -29,11 +68,7 @@
                     @endif
                 </div>
 
-                <!-- Logout Button -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="btn btn-outline-danger btn-sm">Logout</button>
-                </form>
+                <!-- keep only avatar; sidebar contains logout -->
             </div>
 
         </div>

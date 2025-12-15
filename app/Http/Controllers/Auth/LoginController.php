@@ -31,9 +31,7 @@ class LoginController extends Controller
             return back()->withErrors(['email' => 'User not found or banned.'])->withInput();
         }
 
-        if (is_null($user->email_verified_at)) {
-            return back()->withErrors(['email' => 'Email not verified.'])->withInput();
-        }
+        // Email verification disabled in this app; allow login regardless of email_verified_at
 
         if (!Hash::check($request->password, $user->password)) {
             return back()->withErrors(['password' => 'Wrong password.'])->withInput();

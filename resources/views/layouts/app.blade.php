@@ -12,6 +12,11 @@
     {{-- USER SIDEBAR --}}
     @include('layouts.sidebar')
 
+    {{-- Hidden logout form used by sidebar logout link --}}
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display:none;">
+        @csrf
+    </form>
+
     <main class="main-content">
         <div class="container-fluid">
             @yield('content')

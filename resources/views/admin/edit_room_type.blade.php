@@ -32,7 +32,7 @@
                 </div>
 
                 <button class="btn btn-primary">Update Room Type</button>
-                <a href="{{ route('admin.roomtypes.index') }}" class="btn btn-secondary">Cancel</a>
+                <a href="{{ route('admin.roomtypes') }}" class="btn btn-secondary">Cancel</a>
             </form>
 
         </div>

@@ -54,6 +54,7 @@
         .main-content {
             margin-left: 260px;
         }
+        .admin-sidebar-footer { position: absolute; bottom: 0; left: 0; width: 100%; }
     }
 </style>
 
@@ -115,14 +116,17 @@
             </li>
         </ul>
 
-        <div class="mt-auto mb-3">
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button class="btn logout-btn w-100 fw-semibold">
-                    Logout
-                </button>
-            </form>
-        </div>
-
     </div>
+
+    {{-- Footer logout pinned to bottom --}}
+    <div class="admin-sidebar-footer p-3">
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button class="btn logout-btn w-100 fw-semibold">
+                Logout
+            </button>
+        </form>
+    </div>
+
+</div>
 </div>

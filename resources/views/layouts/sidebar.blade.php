@@ -150,7 +150,7 @@
   .content-wrapper,
   .container,
   .main-content {
-    margin-left: 90px;
+    margin-left: 70px;
     transition: margin-left 0.3s ease;
   }
 

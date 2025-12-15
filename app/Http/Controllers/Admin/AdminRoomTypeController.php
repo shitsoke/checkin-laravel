@@ -32,6 +32,6 @@ class AdminRoomTypeController extends Controller
             'hourly_rate' => $request->hourly_rate,
         ]);
 
-        return redirect()->route('admin.roomtypes.index')->with('success', 'Room type updated successfully.');
+        return redirect()->route('admin.roomtypes')->with('success', 'Room type updated successfully.');
     }
 }

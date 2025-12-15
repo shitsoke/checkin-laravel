@@ -128,8 +128,8 @@
                                                         {{ $r->is_visible ? 'Hide' : 'Show' }}
                                                     </button>
                                                 </form>
-                                                <a class="btn btn-sm btn-secondary" href="{{ route('admin.roomtypes') }}">Upload Images</a>
-                                                <a class="btn btn-sm btn-info" href="#">View / Edit</a>
+                                                <a class="btn btn-sm btn-secondary" href="{{ route('admin.rooms.images.upload', $r->id) }}">Upload Images</a>
+                                                <a class="btn btn-sm btn-info" href="{{ route('admin.rooms.show', $r) }}">View / Edit</a>
                                             </div>
                                         </td>
                                     </tr>
